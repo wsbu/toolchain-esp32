@@ -10,6 +10,8 @@ mkdir --parents ~/.conan/data
 touch ~/.conan/.conan.db
 touch ~/.conan/registry.json
 
+for device in $(ls /dev/ttyUSB*) ; do device_args="${device_args} -v ${device}:${device}" ; done
+
 set -x
 docker run -it --rm \
     --net=host \
@@ -20,6 +22,8 @@ docker run -it --rm \
     -v "$HOME/.conan/data:/home/captain/.conan/data" \
     -v "$HOME/.conan/registry.json:/home/captain/.conan/registry.json" \
     -v "$HOME/.conan/.conan.db:/home/captain/.conan/.conan.db" \
+    ${device_args} \
+    --privileged \
     -v "${dir}:${dir}" \
     -w "${dir}" \
-    wsbu/toolchain-esp32:v0.0.1 "$@"
+    wsbu/toolchain-esp32:v0.0.2 "$@"
