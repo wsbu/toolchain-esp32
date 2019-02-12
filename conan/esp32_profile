@@ -1,4 +1,5 @@
 [build_requires]
+esp32-toolchain/1.22.0@wsbu/stable
 [settings]
 os_build=Linux
 arch=esp32
