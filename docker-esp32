@@ -26,4 +26,4 @@ docker run -it --rm \
     --privileged \
     -v "${dir}:${dir}" \
     -w "${dir}" \
-    wsbu/toolchain-esp32:v0.0.2 "$@"
+    wsbu/toolchain-esp32:v0.0.4 "$@"
