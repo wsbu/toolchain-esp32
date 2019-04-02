@@ -1,4 +1,4 @@
-FROM wsbu/toolchain-native:v0.3.0
+FROM wsbu/toolchain-native:v0.3.2
 
 ENV TOOLCHAIN_ARCHIVE_NAME="xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz"
 
