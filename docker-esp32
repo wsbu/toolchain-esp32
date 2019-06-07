@@ -7,8 +7,19 @@ dir="$(pwd)"
 set -e
 
 mkdir --parents ~/.conan/data
-touch ~/.conan/.conan.db
-touch ~/.conan/registry.json
+
+if [[ ! -e "${HOME}/.conan/.conan.db" ]] ; then
+    echo "Conan database (~/.conan/.conan.db) does not exist. Please initialize Conan for your host system first."
+    exit 1
+fi
+if [[ ! -e "${HOME}/.conan/remotes.json" ]] ; then
+    if [[ -e "${HOME}/.conan/registry.json" ]] ; then
+        echo "This version of the Docker image contains a different version of Conan than your most recently used version. Please use your host-installed version of Conan to migrate and then try again."
+    else
+        echo "Conan database (~/.conan/remotes) does not exist. Please initialize Conan for your host system first."
+    fi
+    exit 1
+fi
 
 for device in $(ls /dev/ttyUSB*) ; do device_args="${device_args} -v ${device}:${device}" ; done
 
@@ -20,10 +31,10 @@ docker run -it --rm \
     -v "$HOME/.ssh/id_rsa:/home/captain/.ssh/id_rsa" \
     -v "$HOME/.ssh/known_hosts:/home/captain/.ssh/known_hosts" \
     -v "$HOME/.conan/data:/home/captain/.conan/data" \
-    -v "$HOME/.conan/registry.json:/home/captain/.conan/registry.json" \
+    -v "${HOME}/.conan/remotes.json:/home/captain/.conan/remotes.json" \
     -v "$HOME/.conan/.conan.db:/home/captain/.conan/.conan.db" \
     ${device_args} \
     --privileged \
     -v "${dir}:${dir}" \
     -w "${dir}" \
-    wsbu/toolchain-esp32:v0.0.4 "$@"
+    wsbu/toolchain-esp32:v0.0.5 "$@"

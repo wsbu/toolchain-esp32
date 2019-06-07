@@ -1,18 +1,18 @@
-FROM wsbu/toolchain-native:v0.3.2
+FROM wsbu/toolchain-native:v0.3.4
 
 ENV TOOLCHAIN_ARCHIVE_NAME="xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz"
 
 COPY conan/esp32_profile "${HOME}/.conan/profiles/esp32"
 
-RUN apt-get update && apt-get install --yes --no-install-recommends \
+RUN apt-get update && sudo apt-get install --yes --no-install-recommends \
     libncurses-dev \
     flex \
     bison \
     gperf \
-  && pip --no-cache-dir install \
+    python-pip
+
+RUN pip2 --no-cache-dir install \
     pyserial>=3.0 \
-    future>=0.15.2 \
-    cryptography>=2.1.4 \
     pyparsing>=2.0.3 \
   && wget --quiet "https://dl.espressif.com/dl/${TOOLCHAIN_ARCHIVE_NAME}" -O - | tar xz --strip 1 -C /usr/local \
   && ln -sf "${HOME}/.conan/profiles/esp32" "${HOME}/.conan/profiles/default" \
