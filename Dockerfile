@@ -1,4 +1,4 @@
-FROM wsbu/toolchain-native:v0.3.5
+FROM wsbu/toolchain-native:v0.3.6
 
 ENV TOOLCHAIN_ARCHIVE_NAME="xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz"
 
@@ -8,7 +8,6 @@ RUN apt-get update && sudo apt-get install --yes --no-install-recommends \
     libncurses-dev \
     flex \
     bison \
-    gperf \
     python-pip
 
 RUN pip2 --no-cache-dir install \
